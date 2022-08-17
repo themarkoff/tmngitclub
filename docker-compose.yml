@@ -8,8 +8,11 @@ services:
     command: make docker-run-dev
     container_name: club_app
     environment:
-      - MODE=dev
-      - DEBUG=true
+      - MODE=production
+      - DEBUG=false
+      - APP_HOST=http://utmngitclub.ru/
+      - MEDIA_HOST=http://i.utmngitclub.ru/
+      - MEDIA_UPLOAD_URL=https://i.utmngitclub.ru/upload/multipart/
       - PYTHONUNBUFFERED=1
       - POSTGRES_DB=vas3k_club
       - POSTGRES_USER=postgres
