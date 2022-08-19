@@ -5,43 +5,48 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-    command: make docker-run-production
+    command: make docker-run-dev
     container_name: club_app
     environment:
-      - MODE=production
-      - PYTHONUNBUFFERED=1
+      - MODE=dev
       - DEBUG=false
-      - APP_HOST=http://utmngitclub.ru/
-      - MEDIA_HOST=http://utmngitclub.ru/
-      - MEDIA_UPLOAD_URL=http://i.utmngitclub.ru/
+      - PYTHONUNBUFFERED=1
       - POSTGRES_DB=vas3k_club
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=postgres
       - REDIS_DB=0
       - REDIS_HOST=redis
-      - EMAIL_HOST
-      - EMAIL_PORT
-      - DEFAULT_FROM_EMAIL
     restart: always
     volumes:
-      - ./frontend/static:/app/frontend/static
-      - ./gdpr/downloads:/app/gdpr/downloads
+      - .:/app:delegated # enable hot code reload in debug mode
     depends_on:
       - postgres
       - redis
       - queue
-    ports:
-      - "127.0.0.1:8814:8814"
+      - webpack
 
   queue:
-    <<: *app
+    build:
+      dockerfile: Dockerfile
+      context: .
     command: make docker-run-queue
-    container_name: club_queue
+    environment:
+      - MODE=dev
+      - DEBUG=true
+      - PYTHONUNBUFFERED=1
+      - POSTGRES_DB=vas3k_club
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=postgres
+      - REDIS_DB=0
+      - REDIS_HOST=redis
+    restart: always
+    volumes:
+      - .:/app:delegated
     depends_on:
       - postgres
       - redis
-    ports: []
 
   bot:
     <<: *app
@@ -55,21 +60,26 @@ services:
       - "8816:8816"
 
   postgres:
-    image: postgres:12
+    image: postgres:11
     container_name: club_postgres
-    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: vas3k_club
-    volumes:
-      - /var/www/pgdata:/var/lib/postgresql/data:rw
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=vas3k_club
     ports:
-      - "127.0.0.1:54333:5432"
+      - "5432:5432"
 
   redis:
     image: redis:alpine
-    container_name: club_redis
-    restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+
+  webpack:
+    image: node:14-slim
+    command: npm run watch
+    restart: always
+    volumes:
+      - .:/app:delegated
+    working_dir: /app/frontend
