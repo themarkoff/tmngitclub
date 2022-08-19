@@ -9,7 +9,7 @@ services:
     container_name: club_app
     environment:
       - MODE=dev
-      - DEBUG=false
+      - DEBUG=true
       - PYTHONUNBUFFERED=1
       - POSTGRES_DB=vas3k_club
       - POSTGRES_USER=postgres
