@@ -25,6 +25,8 @@ services:
       - redis
       - queue
       - webpack
+    ports:
+      - "8000:8000"
 
   queue:
     build:
