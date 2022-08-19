@@ -1,29 +1,31 @@
-version: "3"
+version: "3.7"
+
 services:
   club_app: &app
-    image: github.com/themarkoff/club:${GITHUB_SHA:-latest}
+    build:
+      dockerfile: Dockerfile
+      context: .
     command: make docker-run-production
     container_name: club_app
     environment:
       - MODE=production
       - PYTHONUNBUFFERED=1
       - DEBUG=false
-      - APP_HOST=https://vas3k.club
-      - MEDIA_UPLOAD_URL=https://i.vas3k.club/upload/
+      - APP_HOST=http://utmngitclub.ru/
+      - MEDIA_HOST=http://utmngitclub.ru/
+      - MEDIA_UPLOAD_URL=http://i.utmngitclub.ru/
       - POSTGRES_DB=vas3k_club
-      - POSTGRES_USER=vas3k
-      - POSTGRES_PASSWORD=vas3k
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=postgres
       - REDIS_DB=0
       - REDIS_HOST=redis
       - EMAIL_HOST
       - EMAIL_PORT
       - DEFAULT_FROM_EMAIL
-    env_file:
-      - .env
     restart: always
     volumes:
-      - ./frontend/static:/tmp/static
+      - ./frontend/static:/app/frontend/static
       - ./gdpr/downloads:/app/gdpr/downloads
     depends_on:
       - postgres
@@ -52,26 +54,16 @@ services:
     ports:
       - "8816:8816"
 
-  cron:
-    <<: *app
-    command: make docker-run-cron
-    container_name: club_cron
-    depends_on:
-      - club_app
-      - postgres
-      - redis
-    ports: []
-
   postgres:
     image: postgres:12
     container_name: club_postgres
     restart: always
     environment:
-      POSTGRES_USER: vas3k
-      POSTGRES_PASSWORD: vas3k
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: vas3k_club
     volumes:
-      - /home/vas3k/pgdata:/var/lib/postgresql/data:rw
+      - /var/www/pgdata:/var/lib/postgresql/data:rw
     ports:
       - "127.0.0.1:54333:5432"
 
