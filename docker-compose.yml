@@ -77,3 +77,11 @@ services:
     restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
+  
+  webpack:
+    image: node:14-slim
+    command: npm run watch
+    restart: always
+    volumes:
+      - .:/app:delegated
+    working_dir: /app/frontend
