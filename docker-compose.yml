@@ -26,29 +26,16 @@ services:
       - queue
       - webpack
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8814:8814"
 
   queue:
-    build:
-      dockerfile: Dockerfile
-      context: .
+    <<: *app
     command: make docker-run-queue
-    environment:
-      - MODE=dev
-      - DEBUG=true
-      - PYTHONUNBUFFERED=1
-      - POSTGRES_DB=vas3k_club
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOST=postgres
-      - REDIS_DB=0
-      - REDIS_HOST=redis
-    restart: always
-    volumes:
-      - .:/app:delegated
+    container_name: club_queue
     depends_on:
       - postgres
       - redis
+    ports: []
 
   bot:
     <<: *app
@@ -61,27 +48,32 @@ services:
     ports:
       - "8816:8816"
 
+  cron:
+    <<: *app
+    command: make docker-run-cron
+    container_name: club_cron
+    depends_on:
+      - club_app
+      - postgres
+      - redis
+    ports: []
+
   postgres:
-    image: postgres:11
+    image: postgres:12
     container_name: club_postgres
+    restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=vas3k_club
+      POSTGRES_USER: vas3k
+      POSTGRES_PASSWORD: vas3k
+      POSTGRES_DB: vas3k_club
+    volumes:
+      - /home/vas3k/pgdata:/var/lib/postgresql/data:rw
     ports:
-      - "5432:5432"
+      - "127.0.0.1:54333:5432"
 
   redis:
     image: redis:alpine
+    container_name: club_redis
+    restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-    ports:
-      - "6379:6379"
-
-  webpack:
-    image: node:14-slim
-    command: npm run watch
-    restart: always
-    volumes:
-      - .:/app:delegated
-    working_dir: /app/frontend
