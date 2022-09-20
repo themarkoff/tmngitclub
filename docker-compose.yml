@@ -11,9 +11,9 @@ services:
       - MODE=dev
       - DEBUG=true
       - PYTHONUNBUFFERED=1
-      - POSTGRES_DB=vas3k_club
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=pmi_club
+      - POSTGRES_USER=pmiclub
+      - POSTGRES_PASSWORD=pmiclub
       - POSTGRES_HOST=postgres
       - REDIS_DB=0
       - REDIS_HOST=redis
@@ -37,9 +37,9 @@ services:
       - MODE=dev
       - DEBUG=true
       - PYTHONUNBUFFERED=1
-      - POSTGRES_DB=vas3k_club
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=pmi_club
+      - POSTGRES_USER=pmiclub
+      - POSTGRES_PASSWORD=pmiclub
       - POSTGRES_HOST=postgres
       - REDIS_DB=0
       - REDIS_HOST=redis
@@ -49,25 +49,37 @@ services:
     depends_on:
       - postgres
       - redis
-
-  bot:
-    <<: *app
-    command: make docker-run-bot
-    container_name: club_bot
-    depends_on:
-      - club_app
-      - postgres
-      - redis
-    ports:
-      - "8816:8816"
+  
+   bot:
+     build:
+       dockerfile: Dockerfile
+       context: .
+     command: make docker-run-bot
+     environment:
+       - MODE=dev
+       - DEBUG=true
+       - PYTHONUNBUFFERED=1
+       - POSTGRES_DB=pmi_club
+       - POSTGRES_USER=pmiclub
+       - POSTGRES_PASSWORD=pmiclub
+       - POSTGRES_HOST=postgres
+       - REDIS_DB=0
+       - REDIS_HOST=redis
+     restart: always
+     volumes:
+       - .:/app:delegated
+     depends_on:
+       - club_app
+       - postgres
+       - redis
 
   postgres:
     image: postgres:11
     container_name: club_postgres
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=vas3k_club
+      - POSTGRES_USER=pmiclub
+      - POSTGRES_PASSWORD=pmiclub
+      - POSTGRES_DB=pmi_club
     ports:
       - "5432:5432"
 
@@ -85,3 +97,7 @@ services:
     volumes:
       - .:/app:delegated
     working_dir: /app/frontend
+
+networks:
+  default:
+      name: pmi_network
