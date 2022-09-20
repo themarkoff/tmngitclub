@@ -15,12 +15,12 @@ SECRET_KEY = os.getenv("SECRET_KEY") or "wow so secret"
 DEBUG = (os.getenv("DEBUG") != "false")  # SECURITY WARNING: don't run with debug turned on in production!
 TESTS_RUN = True if os.getenv("TESTS_RUN") else False
 
-ALLOWED_HOSTS = ["*", "127.0.0.1", "localhost", "0.0.0.0", "vas3k.club"]
+ALLOWED_HOSTS = ["*", "127.0.0.1", "localhost", "0.0.0.0", "utmngitclub.ru"]
 INTERNAL_IPS = ["127.0.0.1"]
 
 ADMINS = [
-    ("admin", "club@vas3k.club"),
-    ("vas3k", "me@vas3k.ru"),
+    ("admin", "dannylamao@gmail.com"),
+    ("vas3k", "dannyom@ya.ru"),
 ]
 
 INSTALLED_APPS = [
@@ -99,15 +99,14 @@ LOGGING = {
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.getenv("POSTGRES_DB") or "vas3k_club",
-        "USER": os.getenv("POSTGRES_USER") or "postgres",
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD") or "",
-        "HOST": os.getenv("POSTGRES_HOST") or "localhost",
-        "PORT": os.getenv("POSTGRES_PORT") or 5432,
-    }
-}
+  "default": {
+    "ENGINE": "django.db.backends.postgresql_psycopg2",
+    "NAME": os.getenv("POSTGRES_DB") or "pmi_club",
+    "USER": os.getenv("POSTGRES_USER") or "pmiclub",
+    "PASSWORD": os.getenv("POSTGRES_PASSWORD") or "",
+    "HOST": os.getenv("POSTGRES_HOST") or "localhost",
+    "PORT": os.getenv("POSTGRES_PORT") or 5432,
+  }
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -230,16 +229,16 @@ c+Ha7cw3U+n6KI4idHLiwa0CAwEAAQ==
 -----END PUBLIC KEY-----"""
 JWT_ALGORITHM = "RS256"
 
-MEDIA_UPLOAD_URL = "https://i.vas3k.club/upload/multipart/"
-MEDIA_UPLOAD_CODE = os.getenv("MEDIA_UPLOAD_CODE")
+MEDIA_UPLOAD_URL = "https://media.utmngitclub.ru/upload/multipart/"
+MEDIA_UPLOAD_CODE = os.getenv("MMM4444RRRRzzzz11155515235")
 VIDEO_EXTENSIONS = {"mp4", "mov", "webm"}
 IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "gif"}
 
-OG_IMAGE_GENERATOR_URL = "https://og.vas3k.club/preview"
-OG_IMAGE_DEFAULT = "https://vas3k.club/static/images/share.png"
-OG_MACHINE_AUTHOR_LOGO = "https://vas3k.club/static/images/the_machine_logo.png"
+OG_IMAGE_GENERATOR_URL = "https://og.utmngitclub.ru/preview"
+OG_IMAGE_DEFAULT = "https://utmngitclub.ru/static/images/share.png"
+OG_MACHINE_AUTHOR_LOGO = "https://utmngitclub.ru/static/images/the_machine_logo.png"
 OG_IMAGE_GENERATOR_DEFAULTS = {
-    "logo": "https://vas3k.club/static/images/logo/logo-white-text.png",
+    "logo": "https://utmngitclub.ru/static/images/logo/logo-white-text.png",
     "op": 0.6,
     "bg": "#FFFFFF",
 }
@@ -253,7 +252,7 @@ TELEGRAM_CLUB_CHAT_URL = os.getenv("TELEGRAM_CLUB_CHAT_URL")
 TELEGRAM_CLUB_CHAT_ID = os.getenv("TELEGRAM_CLUB_CHAT_ID")
 TELEGRAM_ONLINE_CHANNEL_URL = os.getenv("TELEGRAM_ONLINE_CHANNEL_URL")
 TELEGRAM_ONLINE_CHANNEL_ID = os.getenv("TELEGRAM_ONLINE_CHANNEL_ID")
-TELEGRAM_BOT_WEBHOOK_URL = "https://vas3k.club/telegram/webhook/"
+TELEGRAM_BOT_WEBHOOK_URL = "https://utmngitclub.ru/telegram/webhook/"
 TELEGRAM_BOT_WEBHOOK_HOST = "0.0.0.0"
 TELEGRAM_BOT_WEBHOOK_PORT = 8816
 
@@ -265,7 +264,7 @@ STRIPE_SUCCESS_URL = APP_HOST + "/monies/done/?reference={CHECKOUT_SESSION_ID}"
 
 WEBHOOK_SECRETS = set(os.getenv("WEBHOOK_SECRETS", "").split(","))
 
-DEFAULT_AVATAR = "https://i.vas3k.club/v.png"
+DEFAULT_AVATAR = "https://media.utmngitclub.ru/v.png"
 COMMENT_EDITABLE_TIMEDELTA = timedelta(hours=24)
 COMMENT_DELETABLE_TIMEDELTA = timedelta(days=10 * 365)
 COMMENT_DELETABLE_BY_POST_AUTHOR_TIMEDELTA = timedelta(days=14)
